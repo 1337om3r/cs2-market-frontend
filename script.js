@@ -255,22 +255,26 @@ function applyFilters() {
 
   // Minimum fiyat
   if (priceMin !== '') {
-    result = result.filter(s => s._price >= parseFloat(priceMin));
+    result = result.filter(s => (s._price || 0) >= parseFloat(priceMin));
   }
 
   // Maximum fiyat
   if (priceMax !== '') {
-    result = result.filter(s => s._price <= parseFloat(priceMax));
+    result = result.filter(s => (s._price || 0) <= parseFloat(priceMax));
   }
 
   // Wear filtresi
   if (wear) {
-    result = result.filter(s => s._wear === wear);
+    result = result.filter(s =>
+      s._wear.toLowerCase().trim() === wear.toLowerCase().trim()
+    );
   }
 
   // Tür filtresi
   if (type) {
-    result = result.filter(s => s._type === type);
+    result = result.filter(s =>
+      s._type.toLowerCase().trim() === type.toLowerCase().trim()
+    );
   }
 
   // Sıralama
