@@ -246,6 +246,9 @@ function applyFilters() {
 
   const { search, priceMin, priceMax, wear, type } = state.filters;
 
+  console.log("FILTERS:", state.filters);
+  console.log("ALL SKINS:", state.allSkins.length);
+
   // Arama filtresi
   if (search) {
     result = result.filter(s =>
@@ -254,26 +257,26 @@ function applyFilters() {
   }
 
   // Minimum fiyat
-  if (priceMin !== '') {
+  if (priceMin && !isNaN(priceMin)) {
     result = result.filter(s => (s._price || 0) >= parseFloat(priceMin));
   }
 
   // Maximum fiyat
-  if (priceMax !== '') {
+  if (priceMax && !isNaN(priceMax)) {
     result = result.filter(s => (s._price || 0) <= parseFloat(priceMax));
   }
 
   // Wear filtresi
   if (wear) {
     result = result.filter(s =>
-      s._wear.toLowerCase().trim() === wear.toLowerCase().trim()
+      (s._wear || '').toLowerCase().trim() === wear.toLowerCase().trim()
     );
   }
 
   // Tür filtresi
   if (type) {
     result = result.filter(s =>
-      s._type.toLowerCase().trim() === type.toLowerCase().trim()
+      (s._type || '').toLowerCase().trim() === type.toLowerCase().trim()
     );
   }
 
