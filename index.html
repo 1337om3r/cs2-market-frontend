@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CS2 VAULT — Skin Marketplace</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Distinctive fonts: Rajdhani for headings (military/tech feel), DM Mono for prices -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Chakra+Petch:wght@300;400;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       BACKGROUND GRID OVERLAY
+  ═══════════════════════════════════════════ -->
+  <div class="bg-grid"></div>
+  <div class="bg-scanlines"></div>
+
+  <!-- ═══════════════════════════════════════════
+       HEADER
+  ═══════════════════════════════════════════ -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <!-- Logo -->
+      <div class="logo">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">CS2<em>VAULT</em></span>
+        <span class="logo-bracket">]</span>
+        <span class="logo-tag">MARKETPLACE</span>
+      </div>
+
+      <!-- Live ticker -->
+      <div class="header-ticker">
+        <span class="ticker-dot"></span>
+        <span class="ticker-label">LIVE MARKET</span>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="header-stats">
+        <div class="stat-chip" id="stat-total">
+          <span class="stat-val">—</span>
+          <span class="stat-lbl">SKINS</span>
+        </div>
+        <div class="stat-chip" id="stat-min">
+          <span class="stat-val">—</span>
+          <span class="stat-lbl">MIN $</span>
+        </div>
+        <div class="stat-chip" id="stat-max">
+          <span class="stat-val">—</span>
+          <span class="stat-lbl">MAX $</span>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       SPOTLIGHT SECTIONS (En Ucuz / En Pahalı)
+  ═══════════════════════════════════════════ -->
+  <section class="spotlight-section" id="spotlight">
+    <div class="spotlight-inner">
+
+      <div class="spotlight-col">
+        <div class="spotlight-header">
+          <span class="spotlight-icon">▼</span>
+          <h2>EN UCUZLAR</h2>
+          <span class="spotlight-sub">TOP 5 CHEAPEST</span>
+        </div>
+        <div class="spotlight-list" id="cheapest-list">
+          <!-- JS tarafından doldurulur -->
+        </div>
+      </div>
+
+      <div class="spotlight-divider">
+        <div class="divider-line"></div>
+        <div class="divider-badge">VS</div>
+        <div class="divider-line"></div>
+      </div>
+
+      <div class="spotlight-col">
+        <div class="spotlight-header right">
+          <span class="spotlight-icon expensive">▲</span>
+          <h2>EN PAHALILAR</h2>
+          <span class="spotlight-sub">TOP 5 EXPENSIVE</span>
+        </div>
+        <div class="spotlight-list" id="expensive-list">
+          <!-- JS tarafından doldurulur -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN MARKETPLACE
+  ═══════════════════════════════════════════ -->
+  <main class="marketplace">
+
+    <!-- ─── FILTER / SORT PANEL ─── -->
+    <aside class="filter-panel" id="filter-panel">
+
+      <div class="panel-title">
+        <span class="panel-icon">◈</span> FİLTRELE
+      </div>
+
+      <!-- Arama -->
+      <div class="filter-group">
+        <label class="filter-label">ARAMA</label>
+        <div class="search-wrap">
+          <input
+            type="text"
+            id="search-input"
+            class="filter-input"
+            placeholder="Skin adı ara..."
+            autocomplete="off"
+          />
+          <span class="search-icon">⌕</span>
+        </div>
+      </div>
+
+      <!-- Fiyat Aralığı -->
+      <div class="filter-group">
+        <label class="filter-label">FİYAT ARALIĞI ($)</label>
+        <div class="price-range">
+          <input type="number" id="price-min" class="filter-input half" placeholder="Min" min="0" step="0.01" />
+          <span class="price-sep">—</span>
+          <input type="number" id="price-max" class="filter-input half" placeholder="Max" min="0" step="0.01" />
+        </div>
+      </div>
+
+      <!-- Wear -->
+      <div class="filter-group">
+        <label class="filter-label">WEAR</label>
+        <select id="filter-wear" class="filter-select">
+          <option value="">Tümü</option>
+          <option value="Factory New">Factory New</option>
+          <option value="Minimal Wear">Minimal Wear</option>
+          <option value="Field-Tested">Field-Tested</option>
+          <option value="Well-Worn">Well-Worn</option>
+          <option value="Battle-Scarred">Battle-Scarred</option>
+        </select>
+      </div>
+
+      <!-- Tür -->
+      <div class="filter-group">
+        <label class="filter-label">TÜR</label>
+        <select id="filter-type" class="filter-select">
+          <option value="">Tümü</option>
+          <!-- JS tarafından doldurulur -->
+        </select>
+      </div>
+
+      <!-- Sıralama -->
+      <div class="filter-group">
+        <label class="filter-label">SIRALA</label>
+        <div class="sort-buttons">
+          <button class="sort-btn active" data-sort="price-asc">$ ↑</button>
+          <button class="sort-btn" data-sort="price-desc">$ ↓</button>
+          <button class="sort-btn" data-sort="name-asc">A→Z</button>
+          <button class="sort-btn" data-sort="name-desc">Z→A</button>
+        </div>
+      </div>
+
+      <!-- Uygula / Temizle -->
+      <div class="filter-actions">
+        <button class="btn-apply" id="btn-apply">UYGULA</button>
+        <button class="btn-clear" id="btn-clear">TEMIZLE</button>
+      </div>
+
+    </aside>
+
+    <!-- ─── SKIN GRID ─── -->
+    <div class="grid-section">
+
+      <!-- Toolbar -->
+      <div class="grid-toolbar">
+        <div class="result-count" id="result-count">Yükleniyor...</div>
+        <div class="page-info" id="page-info">Sayfa 1</div>
+      </div>
+
+      <!-- Loading Spinner -->
+      <div class="loading-overlay" id="loading">
+        <div class="spinner-wrap">
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring delay1"></div>
+          <div class="spinner-ring delay2"></div>
+          <div class="spinner-text">MARKET VERİLERİ YÜKLENİYOR</div>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div class="error-state" id="error-state" style="display:none;">
+        <div class="error-icon">⚠</div>
+        <div class="error-msg" id="error-msg">Veriler yüklenemedi.</div>
+        <button class="btn-apply" id="btn-retry">YENİDEN DENE</button>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="empty-state" style="display:none;">
+        <div class="empty-icon">◌</div>
+        <div class="empty-msg">Filtreyle eşleşen skin bulunamadı.</div>
+      </div>
+
+      <!-- Skin Kartları -->
+      <div class="skin-grid" id="skin-grid">
+        <!-- JS tarafından doldurulur -->
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination">
+        <button class="page-btn" id="btn-prev" disabled>← ÖNCEKI</button>
+        <div class="page-numbers" id="page-numbers"></div>
+        <button class="page-btn" id="btn-next">SONRAKI →</button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="footer-logo">[CS2VAULT]</span>
+      <span class="footer-copy">Steam Market bağlantılı veriler. Counter-Strike 2 / Valve Corporation.</span>
+    </div>
+  </footer>
+
+  <!-- Skin Detail Modal -->
+  <div class="modal-overlay" id="modal-overlay" style="display:none;">
+    <div class="modal-box" id="modal-box">
+      <button class="modal-close" id="modal-close">✕</button>
+      <div class="modal-content" id="modal-content"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
