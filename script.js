@@ -190,7 +190,7 @@ async function fetchSkins(page = 1) {
       ...s,
       _type: extractType(s),
       _name: s.name || s.market_hash_name || s.hash_name || 'Bilinmeyen',
-      _price: parseFloat(s.price || s.price_usd || s.steam_price || 0),
+      _price: parseFloat(s.price ?? s.price_usd ?? s.steam_price ?? 0) || 0,
       _wear:  s.wear || s.exterior || s.condition || '',
       _image: s.image || s.icon_url || s.img || s.picture || '',
     }));
@@ -257,13 +257,15 @@ function applyFilters() {
   }
 
   // Minimum fiyat
-  if (priceMin && !isNaN(priceMin)) {
-    result = result.filter(s => (s._price || 0) >= parseFloat(priceMin));
+  const minVal = parseFloat(String(priceMin ?? '').trim());
+  if (!Number.isNaN(minVal)) {
+    result = result.filter(s => (s._price || 0) >= minVal);
   }
 
   // Maximum fiyat
-  if (priceMax && !isNaN(priceMax)) {
-    result = result.filter(s => (s._price || 0) <= parseFloat(priceMax));
+  const maxVal = parseFloat(String(priceMax ?? '').trim());
+  if (!Number.isNaN(maxVal)) {
+    result = result.filter(s => (s._price || 0) <= maxVal);
   }
 
   // Wear filtresi
@@ -297,6 +299,7 @@ function applyFilters() {
   }
 
   state.filtered = result;
+  console.log("RESULT:", result.length);
   renderGrid(result);
   updatePagination();
   updateResultCount(result.length);
