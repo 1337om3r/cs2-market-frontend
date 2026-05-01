@@ -190,7 +190,7 @@ async function fetchSkins(page = 1) {
       ...s,
       _type: extractType(s),
       _name: s.name || s.market_hash_name || s.hash_name || 'Bilinmeyen',
-      _price: parseFloat(s.price ?? s.price_usd ?? s.steam_price ?? 0) || 0,
+      _price: parseFloat(s.price || s.price_usd || s.steam_price || 0),
       _wear:  s.wear || s.exterior || s.condition || '',
       _image: s.image || s.icon_url || s.img || s.picture || '',
     }));
@@ -246,9 +246,6 @@ function applyFilters() {
 
   const { search, priceMin, priceMax, wear, type } = state.filters;
 
-  console.log("FILTERS:", state.filters);
-  console.log("ALL SKINS:", state.allSkins.length);
-
   // Arama filtresi
   if (search) {
     result = result.filter(s =>
@@ -257,29 +254,23 @@ function applyFilters() {
   }
 
   // Minimum fiyat
-  const minVal = parseFloat(String(priceMin ?? '').trim());
-  if (!Number.isNaN(minVal)) {
-    result = result.filter(s => (s._price || 0) >= minVal);
+  if (priceMin !== '') {
+    result = result.filter(s => s._price >= parseFloat(priceMin));
   }
 
   // Maximum fiyat
-  const maxVal = parseFloat(String(priceMax ?? '').trim());
-  if (!Number.isNaN(maxVal)) {
-    result = result.filter(s => (s._price || 0) <= maxVal);
+  if (priceMax !== '') {
+    result = result.filter(s => s._price <= parseFloat(priceMax));
   }
 
   // Wear filtresi
   if (wear) {
-    result = result.filter(s =>
-      (s._wear || '').toLowerCase().trim() === wear.toLowerCase().trim()
-    );
+    result = result.filter(s => s._wear === wear);
   }
 
   // Tür filtresi
   if (type) {
-    result = result.filter(s =>
-      (s._type || '').toLowerCase().trim() === type.toLowerCase().trim()
-    );
+    result = result.filter(s => s._type === type);
   }
 
   // Sıralama
@@ -299,7 +290,6 @@ function applyFilters() {
   }
 
   state.filtered = result;
-  console.log("RESULT:", result.length);
   renderGrid(result);
   updatePagination();
   updateResultCount(result.length);
@@ -379,14 +369,13 @@ function createSkinCard(skin) {
     </div>
   `;
 
-  // Tıklama: Steam Market yönlendirmesi
+  // Tıklama: modal aç (Ctrl+tık → direkt Steam)
   const handleClick = (e) => {
-    // Orta tık veya Ctrl+tık → yeni tab
     const url = steamUrl(skin._name);
     if (e.ctrlKey || e.metaKey || e.button === 1) {
       window.open(url, '_blank', 'noopener');
     } else {
-      window.open(url, '_blank', 'noopener');
+      openModal(skin);
     }
   };
 
@@ -646,8 +635,38 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
 });
 
+// ── MODAL ELEMENTS ───────────────────────────────────────
+const modalImg      = document.getElementById('modal-img');
+const modalType     = document.getElementById('modal-type');
+const modalName     = document.getElementById('modal-skin-name');
+const modalWear     = document.getElementById('modal-wear');
+const modalPrice    = document.getElementById('modal-price');
+const modalSteamBtn = document.getElementById('modal-steam-btn');
+
+function openModal(skin) {
+  modalImg.src               = skin._image || '';
+  modalImg.alt               = skin._name;
+  modalImg.style.display     = skin._image ? '' : 'none';
+  modalType.textContent      = skin._type || '';
+  modalName.textContent      = skin._name;
+  modalWear.textContent      = skin._wear || '';
+  modalPrice.textContent     = formatPrice(skin._price);
+  modalSteamBtn.href         = steamUrl(skin._name);
+
+  DOM.modalOverlay.style.display = 'flex';
+  DOM.modalOverlay.classList.remove('closing');
+  document.body.style.overflow = 'hidden';
+
+  setTimeout(() => DOM.modalClose.focus(), 50);
+}
+
 function closeModal() {
-  DOM.modalOverlay.style.display = 'none';
+  DOM.modalOverlay.classList.add('closing');
+  setTimeout(() => {
+    DOM.modalOverlay.style.display = 'none';
+    DOM.modalOverlay.classList.remove('closing');
+    document.body.style.overflow = '';
+  }, 180);
 }
 
 // Wear / type filtresi değiştiğinde otomatik uygula (opsiyonel UX)

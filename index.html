@@ -231,10 +231,23 @@
   </footer>
 
   <!-- Skin Detail Modal -->
-  <div class="modal-overlay" id="modal-overlay" style="display:none;">
+  <div class="modal-overlay" id="modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="modal-skin-name">
     <div class="modal-box" id="modal-box">
-      <button class="modal-close" id="modal-close">✕</button>
-      <div class="modal-content" id="modal-content"></div>
+      <button class="modal-close" id="modal-close" aria-label="Kapat">✕</button>
+      <div class="modal-content" id="modal-content">
+        <div class="modal-img-wrap">
+          <img class="modal-img" id="modal-img" src="" alt="" />
+        </div>
+        <div class="modal-info">
+          <div class="modal-type" id="modal-type"></div>
+          <div class="modal-skin-name" id="modal-skin-name"></div>
+          <div class="modal-wear" id="modal-wear"></div>
+          <div class="modal-price" id="modal-price"></div>
+          <a class="modal-steam-btn" id="modal-steam-btn" href="#" target="_blank" rel="noopener noreferrer">
+            <span>↗</span> Steam Market'te Aç
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 
